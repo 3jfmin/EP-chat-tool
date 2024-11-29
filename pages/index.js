@@ -1,3 +1,4 @@
+// pages/index.js
 import { useEffect, useState } from 'react';
 import ChatRoom from '../components/ChatRoom';
 import { initializeApp } from 'firebase/app';
