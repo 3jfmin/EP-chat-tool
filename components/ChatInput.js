@@ -1,3 +1,4 @@
+// components/ChatInput.js
 import { useState } from 'react';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
@@ -18,11 +19,12 @@ export default function ChatInput() {
 
   const sendMessage = async (e) => {
     e.preventDefault();
+    // メッセージがFirestoreに追加される
     await addDoc(collection(db, 'messages'), {
       text: message,
       timestamp: new Date(),
     });
-    setMessage('');
+    setMessage(''); // メッセージ送信後、入力をクリア
   };
 
   return (
