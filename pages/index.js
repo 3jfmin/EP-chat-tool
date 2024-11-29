@@ -4,7 +4,6 @@ import ChatRoom from '../components/ChatRoom';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-// Firebase 初期化
 const firebaseConfig = {
   apiKey: 'your-api-key',
   authDomain: 'your-auth-domain',
@@ -23,16 +22,16 @@ export default function Home() {
     const fetchMessages = async () => {
       const querySnapshot = await getDocs(collection(db, 'messages'));
       const messagesArray = querySnapshot.docs.map(doc => doc.data());
-      setMessages(messagesArray);
+      setMessages(messagesArray); // メッセージをstateに保存
     };
 
     fetchMessages();
-  }, []);
+  }, []); // コンポーネントがマウントされたときだけ実行
 
   return (
     <div>
       <h1>Welcome to the Chat</h1>
-      <ChatRoom messages={messages} />
+      <ChatRoom messages={messages} /> {/* メッセージを表示 */}
     </div>
   );
 }
