@@ -1,15 +1,18 @@
+// components/ChatRoom.js
 import ChatMessage from './ChatMessage';
-import ChatInput from './ChatInput';
 
 export default function ChatRoom({ messages }) {
   return (
     <div>
       <div className="messages">
-        {messages.map((msg, index) => (
-          <ChatMessage key={index} message={msg} />
-        ))}
+        {messages.length > 0 ? (
+          messages.map((msg, index) => (
+            <ChatMessage key={index} message={msg} />
+          ))
+        ) : (
+          <p>No messages yet.</p> // メッセージがまだなければ表示
+        )}
       </div>
-      <ChatInput />
     </div>
   );
 }
