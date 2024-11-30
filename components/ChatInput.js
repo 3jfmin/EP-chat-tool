@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 
-// Firebaseの設定（適宜修正）
 const firebaseConfig = {
   apiKey: 'your-api-key',
   authDomain: 'your-auth-domain',
@@ -21,12 +20,16 @@ export default function ChatInput() {
   const sendMessage = async (e) => {
     e.preventDefault();
     if (message.trim()) {
-      // メッセージが空でない場合にのみ送信
-      await addDoc(collection(db, 'messages'), {
-        text: message,
-        timestamp: new Date(),
-      });
-      setMessage(''); // メッセージ送信後、入力フォームをリセット
+      try {
+        // メッセージがFirestoreに追加される
+        await addDoc(collection(db, 'messages'), {
+          text: message,
+          timestamp: new Date(),
+        });
+        setMessage(''); // メッセージ送信後、入力をクリア
+      } catch (error) {
+        console.error("Error adding message: ", error);
+      }
     }
   };
 
