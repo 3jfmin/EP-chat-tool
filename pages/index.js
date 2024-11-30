@@ -2,9 +2,8 @@
 import { useEffect, useState } from 'react';
 import ChatRoom from '../components/ChatRoom';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, onSnapshot } from 'firebase/firestore';
 
-// Firebaseの設定（適宜修正）
 const firebaseConfig = {
   apiKey: 'your-api-key',
   authDomain: 'your-auth-domain',
@@ -20,19 +19,18 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      const querySnapshot = await getDocs(collection(db, 'messages'));
+    const unsubscribe = onSnapshot(collection(db, 'messages'), (querySnapshot) => {
       const messagesArray = querySnapshot.docs.map(doc => doc.data());
-      setMessages(messagesArray); // Firestoreからメッセージを取得してstateに保存
-    };
+      setMessages(messagesArray); // リアルタイムでメッセージを更新
+    });
 
-    fetchMessages();
-  }, []); // コンポーネントがマウントされたときだけ実行
+    return () => unsubscribe(); // クリーンアップ
+  }, []);
 
   return (
     <div>
       <h1>Welcome to the Chat</h1>
-      <ChatRoom messages={messages} /> {/* メッセージを表示 */}
+      <ChatRoom messages={messages} />
     </div>
   );
 }
