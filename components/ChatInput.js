@@ -1,4 +1,3 @@
-// components/ChatInput.js
 import { useState } from 'react';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
@@ -19,18 +18,11 @@ export default function ChatInput() {
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    if (message.trim()) {
-      try {
-        // メッセージがFirestoreに追加される
-        await addDoc(collection(db, 'messages'), {
-          text: message,
-          timestamp: new Date(),
-        });
-        setMessage(''); // メッセージ送信後、入力をクリア
-      } catch (error) {
-        console.error("Error adding message: ", error);
-      }
-    }
+    await addDoc(collection(db, 'messages'), {
+      text: message,
+      timestamp: new Date(),
+    });
+    setMessage('');
   };
 
   return (
@@ -38,7 +30,7 @@ export default function ChatInput() {
       <input
         type="text"
         value={message}
-        onChange={(e) => setMessage(e.target.value)} // 入力値をstateに保存
+        onChange={(e) => setMessage(e.target.value)}
         placeholder="Type a message"
         required
       />
