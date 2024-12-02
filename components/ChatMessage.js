@@ -1,4 +1,3 @@
-// components/ChatMessage.js
 export default function ChatMessage({ message }) {
   return (
     <div className="message">
